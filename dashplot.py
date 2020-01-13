@@ -24,7 +24,8 @@ def plot_histogram(fields, plotid):
                  'name':field} for field in fields],
             'layout': {
                 'title': 'Histogram',
-                'showlegend': True
+                'showlegend': True,
+                'yaxis': {'title': 'Count'}
             },
         }
     )
