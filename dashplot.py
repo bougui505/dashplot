@@ -5,7 +5,6 @@
 # https://research.pasteur.fr/en/member/guillaume-bouvier/
 # 2020-01-13 09:32:10 (UTC+0100)
 
-import sys
 import argparse
 import dash
 import dash_core_components as dcc
