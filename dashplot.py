@@ -16,14 +16,37 @@ def plot_histogram(fields, plotid):
     """
     Plot the histogram for the data given by fields
     """
+    data = []
+    for field in fields:
+        data.append({'x': df[field], 'type': 'histogram',
+                     'name': field})
     plot = dcc.Graph(
         id=plotid,
         figure={
-            'data': [
-                {'x': df[field], 'type': 'histogram',
-                 'name':field} for field in fields],
+            'data': data,
             'layout': {
-                'title': 'Histogram',
+                'showlegend': True,
+                'yaxis': {'title': 'Count'}
+            },
+        }
+    )
+    return plot
+
+
+def plot_scatter(x_fields, y_fields, plotid):
+    """
+    Scatter plot
+    """
+    data = []
+    for (x_field, y_field) in zip(x_fields, y_fields):
+        data.append({'x': df[x_field],
+                     'y': df[y_field],
+                     'name': y_field})
+    plot = dcc.Graph(
+        id=plotid,
+        figure={
+            'data': data,
+            'layout': {
                 'showlegend': True,
                 'yaxis': {'title': 'Count'}
             },
