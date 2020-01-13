@@ -24,7 +24,8 @@ def plot_histogram(fields, plotid):
                 {'x': df[field], 'type': 'histogram',
                  'name':field} for field in fields],
             'layout': {
-                'title': 'Histogram'
+                'title': 'Histogram',
+                'showlegend': True
             },
         }
     )
