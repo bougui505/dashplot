@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: UTF8 -*-
 
 # Author: Guillaume Bouvier -- guillaume.bouvier@pasteur.fr
@@ -41,14 +41,16 @@ def plot_scatter(x_fields, y_fields, plotid):
     for (x_field, y_field) in zip(x_fields, y_fields):
         data.append({'x': df[x_field],
                      'y': df[y_field],
-                     'name': y_field})
+                     'name': y_field,
+                     'mode': 'markers'})
     plot = dcc.Graph(
         id=plotid,
         figure={
             'data': data,
             'layout': {
                 'showlegend': True,
-                'yaxis': {'title': 'Count'}
+                'xaxis': {'title': x_field},
+                'yaxis': {'title': 'y'}
             },
         }
     )
@@ -72,6 +74,12 @@ if __name__ == '__main__':
     parser.add_argument('--hist', nargs='+', type=str,
                         help='plot histogram for the given fields',
                         action='append', metavar='Fields1')
+    parser.add_argument('--scatter', help='Toggle scatter plot',
+                        default=False, action='store_true')
+    parser.add_argument('-x', help='Field for x-values', action='append',
+                        type=str, nargs='+')
+    parser.add_argument('-y', help='Field for y-values', action='append',
+                        type=str, nargs='+')
     args = parser.parse_args()
 
     df = pd.read_csv(args.csv)
@@ -83,9 +91,19 @@ if __name__ == '__main__':
 
     if args.hist is not None:
         hist_fields = nested_args(args.hist)
+        print("Histograms for:")
         for i, fields in enumerate(hist_fields):
             print(i, fields)
             plots.append(plot_histogram(fields, 'hist_%d' % i))
+
+    if args.scatter:
+        x_fields = nested_args(args.x)
+        y_fields = nested_args(args.y)
+        print("Scatter plots for:")
+        print(x_fields, y_fields)
+        for i, (x_field, y_field) in enumerate(zip(x_fields, y_fields)):
+            print(i, y_fields)
+            plots.append(plot_scatter(x_field, y_field, 'scatter_%d' % i))
 
     app.layout = html.Div(plots)
     app.run_server(debug=True)
