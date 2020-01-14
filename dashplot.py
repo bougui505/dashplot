@@ -88,7 +88,7 @@ if __name__ == '__main__':
     parser.add_argument('-y', help='Field for y-values', action='append',
                         type=str, nargs='+')
     parser.add_argument('--labels', help='Name of the field with the labels to display when hovering data points',
-                        type=str, nargs='+')
+                        type=str, nargs='+', action='append')
     args = parser.parse_args()
 
     df = pd.read_csv(args.csv)
@@ -113,10 +113,11 @@ if __name__ == '__main__':
         else:
             labels = nested_args(args.labels)
         print("Scatter plots for:")
-        print(x_fields, y_fields)
-        for i, (x_field, y_field, label) in enumerate(zip(x_fields, y_fields,
-                                                          labels)):
-            print(i, y_fields)
+        for i in range(len(x_fields)):
+            x_field = x_fields[i]
+            y_field = y_fields[i]
+            label = labels[i]
+            print(i, x_field, y_field)
             plots.append(plot_scatter(df, x_field, y_field, 'scatter_%d' % i,
                          labels=label))
 
