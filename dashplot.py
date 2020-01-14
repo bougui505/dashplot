@@ -33,16 +33,23 @@ def plot_histogram(df, fields, plotid):
     return plot
 
 
-def plot_scatter(df, x_fields, y_fields, plotid):
+def plot_scatter(df, x_fields, y_fields, plotid, labels=None):
     """
     Scatter plot
+    - df: dataframe
+    - x_fields: name of the field to use for the x values
+    - y_fields: name of the field to use for the y values
+    - labels: labels to display when hovering the points
     """
     data = []
-    for (x_field, y_field) in zip(x_fields, y_fields):
+    if labels is None:
+        labels = [None, ]*len(y_fields)
+    for (x_field, y_field, label) in zip(x_fields, y_fields, labels):
         data.append({'x': df[x_field],
                      'y': df[y_field],
                      'name': y_field,
-                     'mode': 'markers'})
+                     'mode': 'markers',
+                     'text': df[label]})
     plot = dcc.Graph(
         id=plotid,
         figure={
@@ -80,6 +87,8 @@ if __name__ == '__main__':
                         type=str, nargs='+')
     parser.add_argument('-y', help='Field for y-values', action='append',
                         type=str, nargs='+')
+    parser.add_argument('--labels', help='Name of the field with the labels to display when hovering data points',
+                        type=str, nargs='+')
     args = parser.parse_args()
 
     df = pd.read_csv(args.csv)
@@ -99,11 +108,17 @@ if __name__ == '__main__':
     if args.scatter:
         x_fields = nested_args(args.x)
         y_fields = nested_args(args.y)
+        if args.labels is None:
+            labels = [[None, ]*len(e) for e in y_fields]
+        else:
+            labels = nested_args(args.labels)
         print("Scatter plots for:")
         print(x_fields, y_fields)
-        for i, (x_field, y_field) in enumerate(zip(x_fields, y_fields)):
+        for i, (x_field, y_field, label) in enumerate(zip(x_fields, y_fields,
+                                                          labels)):
             print(i, y_fields)
-            plots.append(plot_scatter(df, x_field, y_field, 'scatter_%d' % i))
+            plots.append(plot_scatter(df, x_field, y_field, 'scatter_%d' % i,
+                         labels=label))
 
     app.layout = html.Div(plots)
     app.run_server(debug=True)
