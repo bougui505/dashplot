@@ -45,11 +45,15 @@ def plot_scatter(df, x_fields, y_fields, plotid, labels=None):
     if labels is None:
         labels = [None, ]*len(y_fields)
     for (x_field, y_field, label) in zip(x_fields, y_fields, labels):
+        if label is not None:
+            text = df[label]
+        else:
+            text = None
         data.append({'x': df[x_field],
                      'y': df[y_field],
                      'name': y_field,
                      'mode': 'markers',
-                     'text': df[label]})
+                     'text': text})
     plot = dcc.Graph(
         id=plotid,
         figure={
