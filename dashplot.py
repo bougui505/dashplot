@@ -12,7 +12,7 @@ import dash_html_components as html
 import pandas as pd
 
 
-def plot_histogram(fields, plotid):
+def plot_histogram(df, fields, plotid):
     """
     Plot the histogram for the data given by fields
     """
@@ -33,7 +33,7 @@ def plot_histogram(fields, plotid):
     return plot
 
 
-def plot_scatter(x_fields, y_fields, plotid):
+def plot_scatter(df, x_fields, y_fields, plotid):
     """
     Scatter plot
     """
@@ -94,7 +94,7 @@ if __name__ == '__main__':
         print("Histograms for:")
         for i, fields in enumerate(hist_fields):
             print(i, fields)
-            plots.append(plot_histogram(fields, 'hist_%d' % i))
+            plots.append(plot_histogram(df, fields, 'hist_%d' % i))
 
     if args.scatter:
         x_fields = nested_args(args.x)
@@ -103,7 +103,7 @@ if __name__ == '__main__':
         print(x_fields, y_fields)
         for i, (x_field, y_field) in enumerate(zip(x_fields, y_fields)):
             print(i, y_fields)
-            plots.append(plot_scatter(x_field, y_field, 'scatter_%d' % i))
+            plots.append(plot_scatter(df, x_field, y_field, 'scatter_%d' % i))
 
     app.layout = html.Div(plots)
     app.run_server(debug=True)
