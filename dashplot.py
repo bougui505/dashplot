@@ -60,6 +60,7 @@ def plot_scatter(df, x_fields, y_fields, plotid, labels=None):
             'data': data,
             'layout': {
                 'showlegend': True,
+                'hovermode': 'closest',
                 'xaxis': {'title': x_field},
                 'yaxis': {'title': 'y'}
             },
