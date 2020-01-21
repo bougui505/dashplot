@@ -53,6 +53,7 @@ def plot_scatter(df, x_fields, y_fields, plotid, labels=None):
                      'y': df[y_field],
                      'name': y_field,
                      'mode': 'markers',
+                     'marker': {'opacity': 0.5},
                      'text': text})
     plot = dcc.Graph(
         id=plotid,
