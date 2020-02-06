@@ -33,17 +33,22 @@ def plot_histogram(df, fields, plotid):
     return plot
 
 
-def plot_scatter(df, x_fields, y_fields, plotid, labels=None):
+def plot_scatter(df, x_fields, y_fields, plotid, labels=None,
+                 labels_data=None):
     """
     Scatter plot
     - df: dataframe
     - x_fields: name of the field to use for the x values
     - y_fields: name of the field to use for the y values
-    - labels: labels to display when hovering the points
+    - labels: name of the column with labels
+              to display when hovering the points
+    - labels_data: list of labels
     """
     data = []
     if labels is None:
         labels = [None, ]*len(y_fields)
+    if labels_data is not None:
+        labels = labels_data
     for (x_field, y_field, label) in zip(x_fields, y_fields, labels):
         if label is not None:
             text = df[label]
